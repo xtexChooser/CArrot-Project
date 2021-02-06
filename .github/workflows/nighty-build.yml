@@ -27,26 +27,28 @@ jobs:
         run: |
           mkdir ca
           sudo git clone -v --branch $branch --depth 1 "https://gitee.com/projectxero/ca.git" "ca"
-          cd ca
 
       - name: Configure publish
         run: |
+          cd ca
           mkdir pub
-          ls -R
-          echo @method local > config/publish.txt
-          echo @destPath pub >> config/publish.txt
+          echo @method local > ./config/publish.txt
+          echo @destPath pub >> ./config/publish.txt
 
       - name: Prepare publish
         run: |
+          cd ca
           cabuild preparePublish
 
       - name: Build as snapshot
         run: |
+          cd ca
           cabuild buildSnapshot
           cabuild publishSnapshot
 
       - name: Build as release
         run: |
+          cd ca
           cabuild buildRelease
           cabuild publishRelease
           ls -R
