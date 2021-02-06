@@ -57,8 +57,8 @@ jobs:
       - name: Upload Outputs as Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.branch }} outputs
-          path: ca/build/outputs
+          name: ${{ matrix.branch }} build outputs
+          path: ca/build
 
       - name: Upload to Git#checkout
         uses: actions/checkout@v2
