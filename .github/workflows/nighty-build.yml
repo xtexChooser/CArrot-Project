@@ -7,18 +7,15 @@ on:
 
 jobs:
   build:
-    name: Build CA in ${{ matrix.branch }} with Node ${{ matrix.node_version }}
+    name: Build CA in ${{ matrix.branch }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: ['8', '10', '12']
         branch: [master, dev]
 
     steps:
       - name: Setup Node.js
         uses: actions/setup-node@v2.1.4
-        with:
-          node-version: ${{ matrix.node_version }}
 
       - name: Install CA Build Tools
         run: npm install -g cabuildtools
@@ -26,12 +23,9 @@ jobs:
       - name: Checkout CA
         env:
           branch: ${{ matrix.branch }}
-        run: git clone --branch $branch  -v --depth 1 "http://gitee.com/projectxero/ca.git" "."
-
-      - name: Download and configure Android core API jar
         run: |
-          curl -o android.jar -L https://gitee.com/xtex/static/raw/master/android-sdk30.jar
-          echo @androidJarPath android.jar > config/import.txt
+          git clone --depth 1 "https://gitee.com/projectxero/ca.git" "."
+          git checkout $branch
 
       - name: Configure publish
         run: |
@@ -41,7 +35,6 @@ jobs:
 
       - name: Prepare publish
         run: |
-          cabuild generateImport
           cabuild preparePublish
 
       - name: Build as snapshot
