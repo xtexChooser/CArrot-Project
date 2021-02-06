@@ -80,8 +80,8 @@ jobs:
         run: |
           mkdir -p gitpub/build
           mkdir -p gitpub/pub
-          cp -f -a ca/build gitpub/build
-          cp -f -a ca/pub gitpub/pub
+          cp -f -a ca/build gitpub
+          cp -f -a ca/pub gitpub
 
       - name: Upload to Git#commit
         env:
@@ -90,7 +90,7 @@ jobs:
           cd gitpub
           git config --local user.email $email
           git config --local user.name "CArrotProject[BOT]"
-          date -d "8 hour" +"%Y%m%d" > ../message.txt
+          date -d "8 hour" +"Update on %Y%m%d" > ../message.txt
           git add -v .
           git commit -F ../message.txt
           git log -3 --pretty=oneline
