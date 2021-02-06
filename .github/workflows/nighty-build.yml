@@ -1,0 +1,56 @@
+name: Nighty Build
+
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build CA in ${{ matrix.branch }} with Node ${{ matrix.node_version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: ['8', '10', '12']
+        branch: [master, dev]
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: ${{ matrix.node_version }}
+
+      - name: Install CA Build Tools
+        run: npm install -g cabuildtools
+
+      - name: Checkout CA
+        env:
+          branch: ${{ matrix.branch }}
+        run: git clone --branch $branch  -v --depth 1 "http://gitee.com/projectxero/ca.git" "."
+
+      - name: Download and configure Android core API jar
+        run: |
+          curl -o android.jar -L https://v1.alapi.cn/api/lanzou?url=https://xtex.lanzous.com/iMzS2ld323c
+          echo @androidJarPath android.jar > config/import.txt
+
+      - name: Configure publish
+        run: |
+          mkdir pub
+          echo @method local > config/publish.txt
+          echo @destPath pub >> config/publish.txt
+
+      - name: Prepare publish
+        run: |
+          cabuild generateImport
+          cabuild preparePublish
+
+      - name: Build as snapshot
+        run: |
+          cabuild buildSnapshot
+          cabuild publishSnapshot
+
+      - name: Build as release
+        run: |
+          cabuild buildRelease
+          cabuild publishRelease
+          ls -R
