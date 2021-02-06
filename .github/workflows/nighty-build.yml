@@ -91,7 +91,9 @@ jobs:
           git config --local user.email $email
           git config --local user.name "CArrotProject[BOT]"
           date -d "8 hour" +"%Y%m%d" > ../message.txt
-          git commit -F ../message.txt -a
+          git add -v .
+          git commit -F ../message.txt
+          git log -3 --pretty=oneline
 
       - name: Upload to Git#push
         uses: ad-m/github-push-action@v0.6.0
