@@ -31,24 +31,77 @@ jobs:
       - name: Configure publish
         run: |
           cd ca
-          mkdir pub
           echo @method local > ./config/publish.txt
-          echo @destPath pub >> ./config/publish.txt
 
       - name: Prepare publish
         run: |
           cd ca
           cabuild preparePublish
 
-      - name: Build as snapshot
+      - name: Build and Publish
         run: |
           cd ca
           cabuild buildSnapshot
           cabuild publishSnapshot
-
-      - name: Build as release
-        run: |
-          cd ca
           cabuild buildRelease
           cabuild publishRelease
-          ls -R
+          cabuild publishHotfix
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.branch }} distrobutions
+          path: ca/build/dist
+
+      - name: Upload Outputs as Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.branch }} outputs
+          path: ca/build/outputs
+
+      - name: Upload to Git#checkout
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ secrets.PUSH_REPO }}
+          token: ${{ secrets.PUSH_TOKEN }}
+          path: gitpub
+
+      - name: Upload to Git#checkout
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ secrets.PUSH_REPO }}
+          token: ${{ secrets.PUSH_TOKEN }}
+          path: gitpub
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Upload to Git#copy
+        run: |
+          cp -f -a ca/build gitpub
+
+      - name: Upload to Git#commit
+        env:
+          email: ${{ secrets.PUSH_EMAIL }}
+        run: |
+          cd gitpub
+          git config --local user.email $email
+          git config --local user.name "CArrotProject[BOT]"
+          date %Y%m%d > ../message.txt
+          git commit -F ../message.txt -a
+
+      - name: Upload to Git#push
+        uses: ad-m/github-push-action@0.6.0
+        with:
+          directory: gitpub
+          repository: ${{ secrets.PUSH_REPO }}
+          branch: main
+          github_token: ${{ secrets.PUSH_TOKEN }}
+
+      - name: Package Workspace
+        run: zip -r -S -9 -v workspace.zip .
+
+      - name: Upload Workspace as Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.branch }} workspace
+          path: workspace.zip
