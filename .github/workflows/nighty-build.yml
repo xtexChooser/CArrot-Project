@@ -32,6 +32,7 @@ jobs:
         run: |
           cd ca
           echo @method local > ./config/publish.txt
+          echo @destPath pub >> ./config/publish.txt
 
       - name: Prepare publish
         run: |
