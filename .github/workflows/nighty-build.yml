@@ -90,7 +90,7 @@ jobs:
           git add -v .
           git commit -F ../message.txt
           git log -10 --pretty=oneline
-          git pull
+          sleep 5m
 
       - name: Upload to Git#push
         uses: ad-m/github-push-action@v0.6.0
