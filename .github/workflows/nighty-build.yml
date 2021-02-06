@@ -18,14 +18,16 @@ jobs:
         uses: actions/setup-node@v2.1.4
 
       - name: Install CA Build Tools
-        run: npm install -g cabuildtools
+        run: sudo npm install -g cabuildtools
 
       - name: Checkout CA
         env:
           branch: ${{ matrix.branch }}
         run: |
-          git clone --depth 1 "https://gitee.com/projectxero/ca.git" "."
-          git checkout $branch
+          mkdir ca
+          sudo git clone --depth 1 "https://gitee.com/projectxero/ca.git" "ca"
+          sudo git checkout $branch
+          cd ca
 
       - name: Configure publish
         run: |
