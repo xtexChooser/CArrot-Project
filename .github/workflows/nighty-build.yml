@@ -104,7 +104,7 @@ jobs:
           github_token: ${{ secrets.PUSH_TOKEN }}
 
       - name: Package Workspace
-        run: zip -r -S -9 -v workspace.zip .
+        run: zip -r -9 -v workspace.zip .
 
       - name: Upload Workspace as Artifacts
         uses: actions/upload-artifact@v2
