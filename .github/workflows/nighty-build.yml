@@ -31,8 +31,9 @@ jobs:
       - name: Configure publish
         run: |
           cd ca
+          mkdir pub
           echo @method local > ./config/publish.txt
-          echo @destPath pub >> ./config/publish.txt
+          echo @destPath ./pub >> ./config/publish.txt
 
       - name: Prepare publish
         run: |
@@ -46,13 +47,12 @@ jobs:
           cabuild publishSnapshot
           cabuild buildRelease
           cabuild publishRelease
-          cabuild publishHotfix
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.branch }} distrobutions
-          path: ca/build/dist
+          path: ca/pub
 
       - name: Upload Outputs as Artifacts
         uses: actions/upload-artifact@v2
@@ -78,7 +78,10 @@ jobs:
 
       - name: Upload to Git#copy
         run: |
-          cp -f -a ca/build gitpub
+          mkdir -p gitpub/build
+          mkdir -p gitpub/pub
+          cp -f -a ca/build gitpub/build
+          cp -f -a ca/pub gitpub/pub
 
       - name: Upload to Git#commit
         env:
