@@ -90,7 +90,9 @@ jobs:
           git add -v .
           git commit -F ../message.txt
           git log -10 --pretty=oneline
+          if [ "$branch" = "dev" ]; then
           sleep 5m
+          fi
 
       - name: Upload to Git#push
         uses: ad-m/github-push-action@v0.6.0
