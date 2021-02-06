@@ -81,6 +81,7 @@ jobs:
       - name: Upload to Git#commit
         env:
           email: ${{ secrets.PUSH_EMAIL }}
+          branch: ${{ matrix.branch }}
         run: |
           cd gitpub
           git config --local user.email $email
