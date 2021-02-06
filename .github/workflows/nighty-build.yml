@@ -66,13 +66,6 @@ jobs:
           repository: ${{ secrets.PUSH_REPO }}
           token: ${{ secrets.PUSH_TOKEN }}
           path: gitpub
-
-      - name: Upload to Git#checkout
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ secrets.PUSH_REPO }}
-          token: ${{ secrets.PUSH_TOKEN }}
-          path: gitpub
           fetch-depth: 0
           persist-credentials: false
 
