@@ -1,6 +1,7 @@
 name: Nighty Build
 
 on:
+  push:
   schedule:
     - cron: '0 8 * * *'
   workflow_dispatch:
@@ -25,13 +26,13 @@ jobs:
           branch: ${{ matrix.branch }}
         run: |
           mkdir ca
-          sudo git clone --depth 1 "https://gitee.com/projectxero/ca.git" "ca"
+          sudo git clone -v --branch $branch --depth 1 "https://gitee.com/projectxero/ca.git" "ca"
           cd ca
-          sudo git checkout $branch
 
       - name: Configure publish
         run: |
           mkdir pub
+          ls -R
           echo @method local > config/publish.txt
           echo @destPath pub >> config/publish.txt
 
