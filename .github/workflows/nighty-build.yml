@@ -26,8 +26,8 @@ jobs:
         run: |
           mkdir ca
           sudo git clone --depth 1 "https://gitee.com/projectxero/ca.git" "ca"
-          sudo git checkout $branch
           cd ca
+          sudo git checkout $branch
 
       - name: Configure publish
         run: |
