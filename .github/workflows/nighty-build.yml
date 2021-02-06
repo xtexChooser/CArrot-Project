@@ -26,7 +26,7 @@ jobs:
           branch: ${{ matrix.branch }}
         run: |
           mkdir ca
-          sudo git clone -v --branch $branch --depth 1 "https://gitee.com/projectxero/ca.git" "ca"
+          git clone -v --branch $branch --depth 1 "https://gitee.com/projectxero/ca.git" "ca"
 
       - name: Configure publish
         run: |
