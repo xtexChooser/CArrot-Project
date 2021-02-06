@@ -3,7 +3,7 @@ name: Nighty Build
 on:
   push:
   schedule:
-    - cron: '0 8 * * *'
+    - cron: '0 16 * * *'
   workflow_dispatch:
 
 jobs:
@@ -90,7 +90,7 @@ jobs:
           cd gitpub
           git config --local user.email $email
           git config --local user.name "CArrotProject[BOT]"
-          date %Y%m%d > ../message.txt
+          date -d "8 hour" +"%Y%m%d" > ../message.txt
           git commit -F ../message.txt -a
 
       - name: Upload to Git#push
