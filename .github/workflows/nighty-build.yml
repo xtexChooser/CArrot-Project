@@ -96,7 +96,8 @@ jobs:
           git checkout
           git add -v .
           git commit -F ../message.txt
-          git log -3 --pretty=oneline
+          git log -10 --pretty=oneline
+          git pull
 
       - name: Upload to Git#push
         uses: ad-m/github-push-action@v0.6.0
