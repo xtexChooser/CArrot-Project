@@ -30,7 +30,7 @@ jobs:
 
       - name: Download and configure Android core API jar
         run: |
-          curl -o android.jar -L https://v1.alapi.cn/api/lanzou?url=https://xtex.lanzous.com/iMzS2ld323c
+          curl -o android.jar -L https://gitee.com/xtex/static/raw/master/android-sdk30.jar
           echo @androidJarPath android.jar > config/import.txt
 
       - name: Configure publish
