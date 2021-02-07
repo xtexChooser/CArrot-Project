@@ -25,6 +25,9 @@ jobs:
         env:
           branch: ${{ matrix.branch }}
         run: |
+          if [ "$branch" = "dev" ]; then
+          sleep 3m
+          fi
           mkdir ca
           git clone -v --branch $branch --depth 1 "https://gitee.com/projectxero/ca.git" "ca"
 
@@ -91,9 +94,6 @@ jobs:
           git add -v .
           git commit -F ../message.txt
           git log -10 --pretty=oneline
-          if [ "$branch" = "dev" ]; then
-          sleep 5m
-          fi
 
       - name: Upload to Git#push
         uses: ad-m/github-push-action@v0.6.0
